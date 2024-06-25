@@ -32,24 +32,39 @@ if (isset($_SESSION['id'])) {
     $id_produk = $_POST['id_produk'];
     $jumlah = $_POST['jumlah'];
 
+    if($jumlah < 0){
+        exit('gagal');
+    }else{
+
+        $produk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT harga, jumlah FROM tb_produk WHERE id_produk = '$id_produk'"));
+        $sisa = $produk['jumlah'] - $jumlah;
+
+        if($sisa < 0){
+        exit('stok-habis');
+
+        }
+
+        $harga = mysqli_fetch_assoc(mysqli_query($conn, "SELECT harga FROM tb_produk WHERE id_produk = '$id_produk'"))['harga'];
+    
+        $total_harga = $harga * $jumlah;
+    
+    
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => $total_harga,
+            ),
+    
+        );
+    
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+        echo $snapToken;
+
+    }
+
     // print_r($jumlah);
 
 
-    $harga = mysqli_fetch_assoc(mysqli_query($conn, "SELECT harga FROM tb_produk WHERE id_produk = '$id_produk'"))['harga'];
-
-    $total_harga = $harga * $jumlah;
-
-
-    $params = array(
-        'transaction_details' => array(
-            'order_id' => rand(),
-            'gross_amount' => $total_harga,
-        ),
-
-    );
-
-    $snapToken = \Midtrans\Snap::getSnapToken($params);
-    echo $snapToken;
 
 } else {
     exit("NOT-LOGIN");

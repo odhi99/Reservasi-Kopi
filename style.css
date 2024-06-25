@@ -199,6 +199,7 @@ section {
     margin: 90px;
     padding: 23px;
     display: flex;
+    flex-wrap: wrap;
     height: 100%;
     /* background-color: white; */
     color: white;

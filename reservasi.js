@@ -58,6 +58,24 @@ function reserve() {
                 showConfirmButton: true,
               })
               .then(function (isConfirm) {});
+        }else if (token === "gagal") {
+          swal
+            .fire({
+              title: "Lapangan telah di-Boking",
+              text: "Coba di jam lainnya",
+              icon: "error",
+              showConfirmButton: true,
+            })
+            .then(function (isConfirm) {});
+        }else if (token === "stok-habis") {
+            swal
+              .fire({
+                title: "Stok Habis",
+                text: "Coba lagi lain waktu",
+                icon: "error",
+                showConfirmButton: true,
+              })
+              .then(function (isConfirm) {});
           }  else {
           window.snap.pay(token, {
             onSuccess: function (result) {

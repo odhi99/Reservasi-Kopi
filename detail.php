@@ -98,6 +98,10 @@ if(isset($_SESSION['id'])){
 
             <div class="divide-input">
                 <div class="input-form">
+                    <p>Stok </p>
+                    <input type="number" min="1" value="<?= $data['jumlah']?>" readonly>
+                </div>
+                <div class="input-form">
                     <p>Jumlah </p>
                     <input type="number" id="jumlah" min="1" value="1" onchange="hitungHarga()">
                 </div>

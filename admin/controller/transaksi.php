@@ -22,19 +22,21 @@ switch ($aksi) {
         $hp = $_POST['hp'];
         $jumlah = $_POST['jumlah'];
         
-        $harga = mysqli_fetch_assoc(mysqli_query($conn, "SELECT harga FROM tb_produk WHERE id_produk = '$id_produk'"))['harga'];
+        $produk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT harga, jumlah FROM tb_produk WHERE id_produk = '$id_produk'"));
 
-        $total_harga = $harga * $jumlah;
+        $total_harga = $produk['harga'] * $jumlah;
+        $sisa = $produk['jumlah'] - $jumlah;
 
 
         $sql = "INSERT INTO `tb_transaksi` (`id_transaksi`, `id_user`, `id_produk`, `total_harga`,  `jumlah`,  `tanggal`) VALUES (NULL, '$id_user', '$id_produk', '$total_harga', '$jumlah', NOW())";
 
-        if (mysqli_query($conn, $sql)) {
+
+
+        if (mysqli_query($conn, $sql) && mysqli_query($conn, "UPDATE `tb_produk` SET `jumlah` = $sisa WHERE `tb_produk`.`id_produk` = '$id_produk'")) {
             exit("sukses");
         } else {
             exit("gagal");
         }
-
 
         break;
 
